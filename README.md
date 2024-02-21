@@ -1,2 +1,2 @@
 
-![](loginpage.png)
+<img src="./public/loginpage.png"/>

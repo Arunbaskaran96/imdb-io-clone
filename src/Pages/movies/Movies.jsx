@@ -1,67 +1,32 @@
+import { Link } from "react-router-dom";
 import Button from "../../compoenets/ui/button/Button";
 import classes from "./movie.module.css";
+import { fetchMovies, movieSelector } from "../../redux/slices/movieSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import ViewMovie from "../../compoenets/movie/viewmovie/ViewMovie";
+import Loading from "../../compoenets/loading/Loading";
 
 function Movies() {
-  const movies = [
-    {
-      poster:
-        "https://bsmedia.business-standard.com/_media/bs/img/article/2024-01/01/full/1704098626-7063.png?im=FeatureCrop,size=(826,465)",
-      name: "GOAT",
-      year: "2018",
-      plot: "The Greatest of All Time is an upcoming Indian Tamil-language science fiction action film directed by Venkat Prabhu and produced by AGS Entertainment. The film stars Vijay in dual roles, leading an ensemble cast that includes Prashanth, Prabhu Deva, Sneha, Laila, Meenakshi Chaudhary, Parvati Nair, Mohan, Jayaram, Ajmal Ameer, Yogi Babu, VTV Ganesh, Vaibhav, Premgi Amaren, Aravind Akash and Ajay Raj.",
-      Producer: "Sun Pictures",
-    },
-    {
-      poster:
-        "https://bsmedia.business-standard.com/_media/bs/img/article/2024-01/01/full/1704098626-7063.png?im=FeatureCrop,size=(826,465)",
-      name: "GOAT",
-      year: "2018",
-      plot: "The Greatest of All Time is an upcoming Indian Tamil-language science fiction action film directed by Venkat Prabhu and produced by AGS Entertainment. The film stars Vijay in dual roles, leading an ensemble cast that includes Prashanth, Prabhu Deva, Sneha, Laila, Meenakshi Chaudhary, Parvati Nair, Mohan, Jayaram, Ajmal Ameer, Yogi Babu, VTV Ganesh, Vaibhav, Premgi Amaren, Aravind Akash and Ajay Raj.",
-      Producer: "Sun Pictures",
-    },
-    {
-      poster:
-        "https://bsmedia.business-standard.com/_media/bs/img/article/2024-01/01/full/1704098626-7063.png?im=FeatureCrop,size=(826,465)",
-      name: "GOAT",
-      year: "2018",
-      plot: "The Greatest of All Time is an upcoming Indian Tamil-language science fiction action film directed by Venkat Prabhu and produced by AGS Entertainment. The film stars Vijay in dual roles, leading an ensemble cast that includes Prashanth, Prabhu Deva, Sneha, Laila, Meenakshi Chaudhary, Parvati Nair, Mohan, Jayaram, Ajmal Ameer, Yogi Babu, VTV Ganesh, Vaibhav, Premgi Amaren, Aravind Akash and Ajay Raj.",
-      Producer: "Sun Pictures",
-    },
-    {
-      poster:
-        "https://bsmedia.business-standard.com/_media/bs/img/article/2024-01/01/full/1704098626-7063.png?im=FeatureCrop,size=(826,465)",
-      name: "GOAT",
-      year: "2018",
-      plot: "The Greatest of All Time is an upcoming Indian Tamil-language science fiction action film directed by Venkat Prabhu and produced by AGS Entertainment. The film stars Vijay in dual roles, leading an ensemble cast that includes Prashanth, Prabhu Deva, Sneha, Laila, Meenakshi Chaudhary, Parvati Nair, Mohan, Jayaram, Ajmal Ameer, Yogi Babu, VTV Ganesh, Vaibhav, Premgi Amaren, Aravind Akash and Ajay Raj.",
-      Producer: "Sun Pictures",
-    },
-    {
-      poster:
-        "https://bsmedia.business-standard.com/_media/bs/img/article/2024-01/01/full/1704098626-7063.png?im=FeatureCrop,size=(826,465)",
-      name: "GOAT",
-      year: "2018",
-      plot: "The Greatest of All Time is an upcoming Indian Tamil-language science fiction action film directed by Venkat Prabhu and produced by AGS Entertainment. The film stars Vijay in dual roles, leading an ensemble cast that includes Prashanth, Prabhu Deva, Sneha, Laila, Meenakshi Chaudhary, Parvati Nair, Mohan, Jayaram, Ajmal Ameer, Yogi Babu, VTV Ganesh, Vaibhav, Premgi Amaren, Aravind Akash and Ajay Raj.",
-      Producer: "Sun Pictures",
-    },
-    {
-      poster:
-        "https://bsmedia.business-standard.com/_media/bs/img/article/2024-01/01/full/1704098626-7063.png?im=FeatureCrop,size=(826,465)",
-      name: "GOAT",
-      year: "2018",
-      plot: "The Greatest of All Time is an upcoming Indian Tamil-language science fiction action film directed by Venkat Prabhu and produced by AGS Entertainment. The film stars Vijay in dual roles, leading an ensemble cast that includes Prashanth, Prabhu Deva, Sneha, Laila, Meenakshi Chaudhary, Parvati Nair, Mohan, Jayaram, Ajmal Ameer, Yogi Babu, VTV Ganesh, Vaibhav, Premgi Amaren, Aravind Akash and Ajay Raj.",
-      Producer: "Sun Pictures",
-    },
-  ];
+  const { status, movies, error } = movieSelector();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchMovies());
+  }, []);
   return (
     <div>
       <div className={classes.newBtnContainer}>
-        <Button value="Add Movie" variant="primary" />
+        <Link to="/layout/addmovie">
+          <Button value="Add Movie" variant="primary" />
+        </Link>
       </div>
+      {status === true && <Loading />}
       <div className={classes.movieContainer}>
         {movies &&
-          movies.map((movie) => {
+          movies.map((movie, index) => {
             return (
-              <div className={classes.movie}>
+              <div key={index} className={classes.movie}>
                 <div>
                   <img
                     className={classes.img}
@@ -76,7 +41,7 @@ function Movies() {
                   </h2>
                   <h2>
                     <span style={{ color: "#b68d08" }}>Producer : </span>
-                    {movie.Producer}
+                    {movie.producer.name}
                   </h2>
                   <h2>
                     <span style={{ color: "#b68d08" }}>Year : </span>
@@ -87,8 +52,10 @@ function Movies() {
                     {movie.plot}
                   </p>
                   <div className={classes.btnContainer}>
-                    <Button height="30px" value="View" variant="primary" />
-                    <Button height="30px" value="Edit" variant="secondary" />
+                    <ViewMovie key={index} movie={movie} />
+                    <Link to={`/layout/editMovie/${movie._id}`}>
+                      <Button height="30px" value="Edit" variant="secondary" />
+                    </Link>
                   </div>
                 </div>
               </div>

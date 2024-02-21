@@ -4,15 +4,6 @@ import { NavLink } from "react-router-dom";
 function NavLinks() {
   return (
     <div className={classes.container}>
-      {/* <div onClick={() => setBody("actors")} className={classes.link}>
-        Actors
-      </div>
-      <div onClick={() => setBody("movies")} className={classes.link}>
-        Movies
-      </div>
-      <div onClick={() => setBody("producers")} className={classes.link}>
-        Producers
-      </div> */}
       <NavLink
         to="/home/actors"
         className={({ isActive }) => {

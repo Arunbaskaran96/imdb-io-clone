@@ -9,6 +9,9 @@
 .form{
     width: 45%;
 }
+.error{
+    color: red;
+}
 
 @media only Screen and (max-width:1100px){
     .form{

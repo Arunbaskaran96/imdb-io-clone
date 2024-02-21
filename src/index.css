@@ -21,3 +21,8 @@ body{
   background-color: var(--bg-color1);
   color: var(--color1);
 }
+
+a{
+  text-decoration: none;
+  color: var(--color1);
+}

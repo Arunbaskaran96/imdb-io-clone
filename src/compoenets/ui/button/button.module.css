@@ -5,8 +5,8 @@
     cursor: pointer;
     border-radius: 8px;
     font-size: 16px;
-    letter-spacing: 2px;
-    color: var(--color-white);
+    letter-spacing: 1px;
+    color: var(--color1);
     text-transform: uppercase;
     padding: 0px 10px;
     &:disabled{

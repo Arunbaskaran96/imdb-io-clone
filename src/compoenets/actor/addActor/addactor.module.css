@@ -1,0 +1,14 @@
+.gender{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.genderContainer{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.error{
+    color: red;
+}

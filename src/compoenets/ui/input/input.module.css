@@ -4,6 +4,7 @@
     border: none;
     background-color: transparent;
     font-size: 18px;
+    color: var(--color1);
     &:focus{
         outline: none;
     }
@@ -12,7 +13,7 @@
 .inputContainer{
     border: 1px solid grey;
     border-radius: 8px;
-    background-color: var(--bg-white);
+    background-color: var(--bg-color1);
     display: flex;
     align-items: center;
     padding-left: 8px;

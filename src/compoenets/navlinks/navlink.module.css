@@ -42,3 +42,12 @@
     color:#b68d08 ;
     background-color:var(--color1);
 }
+
+@media only Screen and (max-width:1000px){
+    .container{    padding: 0px 100px;}
+}
+
+
+@media only Screen and (max-width:700px){
+    .container{    padding: 0px 20px;}
+}

@@ -15,3 +15,8 @@
     color: var(--color-white);
     letter-spacing: 2px;
 }
+.action{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}

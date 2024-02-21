@@ -1,6 +1,6 @@
 import classes from "./button.module.css";
 
-function Button({ value, variant, onClick, height }) {
+function Button({ value, variant, onClick, height, type, disabled }) {
   return (
     <div className={classes.container}>
       <button
@@ -11,6 +11,8 @@ function Button({ value, variant, onClick, height }) {
           variant === "tertiary" && classes.tertiary
         }`}
         onClick={onClick}
+        type={type}
+        disabled={disabled}
       >
         {value}
       </button>

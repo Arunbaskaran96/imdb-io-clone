@@ -5,6 +5,7 @@ import classes from "./signup.module.css";
 import { validateSignup } from "../../utils/validate/signup";
 import Loading from "../../compoenets/loading/Loading";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../config";
 
 function Signup() {
   const [errors, setErrors] = useState({});
@@ -27,7 +28,7 @@ function Signup() {
     try {
       setLoading(true);
       if (validateSignup(formData, setErrors)) {
-        const data = await fetch("http://localhost:8000/api/adduser", {
+        const data = await fetch(`${BASE_URL}/adduser`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

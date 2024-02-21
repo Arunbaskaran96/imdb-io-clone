@@ -7,5 +7,8 @@ export const useLocalStorage = (key) => {
     const value = window.localStorage.getItem(key);
     return JSON.parse(value);
   };
-  return { setItem, getItem };
+  const removeItem = (key) => {
+    return window.localStorage.removeItem(key);
+  };
+  return { setItem, getItem, removeItem };
 };

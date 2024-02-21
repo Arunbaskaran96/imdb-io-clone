@@ -1,5 +1,5 @@
 import classes from "./signin.module.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Input from "../../compoenets/ui/input/Input";
 import Button from "../../compoenets/ui/button/Button";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,22 +8,19 @@ import { signin, userSelector } from "../../redux/slices/userSlice";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { validSignin } from "../../utils/validate/signin";
 import { FaHandPointUp } from "react-icons/fa";
+import { BASE_URL } from "../../config";
 
 function Signin() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-
   const { setItem } = useLocalStorage("user");
   const dispatch = useDispatch();
   const nav = useNavigate();
   const [errors, setErrors] = useState({});
-  const { loading, user, error } = userSelector();
-  if (user?._id) {
-    nav("/home/movies");
-    setItem(user);
-  }
+  const { loading, user } = userSelector();
+  const [error, setError] = useState(null);
 
-  const formHandler = (e) => {
+  const formHandler = async (e) => {
     e.preventDefault();
     if (
       validSignin(
@@ -32,12 +29,23 @@ function Signin() {
         setErrors
       )
     ) {
-      dispatch(
-        signin({
-          email: emailRef.current.value,
-          password: passwordRef.current.value,
-        })
-      );
+      const data = await fetch(`${BASE_URL}/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: emailRef?.current?.value,
+          password: passwordRef?.current?.value,
+        }),
+      });
+      const res = await data.json();
+      if (res.success === false) {
+        setError(res.message);
+      } else {
+        nav("/home/movies");
+        setItem(res);
+      }
     }
   };
 
@@ -66,9 +74,9 @@ function Signin() {
             {errors.password} <FaHandPointUp />
           </span>
         )}
-        {/* <Link to="/home"> */}
+        {error && <span className={classes.error}>{error}</span>}
+
         <Button value="Signin" variant="primary" disabled={loading} />
-        {/* </Link> */}
         <Link to="/signup">
           <Button
             value="Create new Account"

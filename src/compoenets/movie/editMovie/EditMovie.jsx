@@ -13,6 +13,7 @@ import Button from "../../ui/button/Button";
 import AddActor from "../../actor/addActor/AddActor";
 import { validMovie } from "../../../utils/validate/movie";
 import TextArea from "../../ui/textArea/TextArea";
+import { BASE_URL } from "../../../config";
 
 function EditMovie() {
   const { id } = useParams();
@@ -65,7 +66,7 @@ function EditMovie() {
     try {
       setLoading(true);
       const data = await fetch(
-        `http://localhost:8000/api/searchProducer?name=${debouncedProducer}`,
+        `${BASE_URL}searchProducer?name=${debouncedProducer}`,
         {
           method: "GET",
           headers: {
@@ -97,7 +98,7 @@ function EditMovie() {
     try {
       setLoading(true);
       const data = await fetch(
-        `http://localhost:8000/api/searchActor?name=${debouncedActor}`,
+        `${BASE_URL}searchActor?name=${debouncedActor}`,
         {
           method: "GET",
           "Content-Type": "application/json",
@@ -106,7 +107,11 @@ function EditMovie() {
       const res = await data.json();
       if (res.success === false) {
       } else {
-        setActors(res);
+        res.map((item) => {
+          if (!selectedActorsSet.has(item._id)) {
+            setActors((prev) => [...prev, item]);
+          }
+        });
       }
     } catch (error) {
       console.log(error);
@@ -137,6 +142,7 @@ function EditMovie() {
     setSelectedActors((prev) => [...prev, a]);
     setSelectedActorsSet(selectedActorsSet.add(a._id));
     setFormData({ ...formData, actors: [...selectedActorsSet] });
+    setActorQuery("");
   };
   const removeSelectedActor = (actor) => {
     setSelectedActors(selectedActors.filter((item) => item._id != actor._id));
@@ -151,7 +157,7 @@ function EditMovie() {
     setBtnLoading(true);
     try {
       if (validMovie(formData, setErrors)) {
-        const data = await fetch(`http://localhost:8000/api/editmovie/${id}`, {
+        const data = await fetch(`${BASE_URL}/editmovie/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -296,6 +302,7 @@ function EditMovie() {
               placeholder="actors"
               type="text"
               onChange={handleActor}
+              originalValue={actorQuery}
             />
             {errors.actors && (
               <span className={classes.name}>

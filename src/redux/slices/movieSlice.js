@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-
-const URL = "http://localhost:8000/api/getmovies";
+import { BASE_URL } from "../../config";
 
 export const fetchMovies = createAsyncThunk("movie/fetchMovies", async () => {
-  const data = await fetch(URL, {
+  const data = await fetch(`${BASE_URL}/getmovies`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

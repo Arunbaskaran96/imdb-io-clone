@@ -2,13 +2,23 @@ import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Button from "../../ui/button/Button";
 import Input from "../../ui/input/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { validateActor } from "../../../utils/validate/actor";
 import classes from "./addproducer.module.css";
+import { BASE_URL } from "../../../config";
+import { useDispatch } from "react-redux";
+import {
+  addProducer,
+  producerSelector,
+} from "../../../redux/slices/producerSlice";
+import Loading from "../../loading/Loading";
+import TextArea from "../../ui/textArea/TextArea";
 
 function AddProducer() {
   const [opened, { open, close }] = useDisclosure(false);
   const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
+  const { addProducerSuccessfully, status } = producerSelector();
   const [formData, setFormData] = useState({
     name: "",
     dob: "",
@@ -25,42 +35,56 @@ function AddProducer() {
       setFormData({ ...formData, [e.target.id]: e.target.value });
     }
   };
+  useEffect(() => {
+    if (addProducerSuccessfully) {
+      close();
+    }
+  }, [addProducerSuccessfully]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (validateActor(formData, setErrors)) {
-      const data = await fetch("http://localhost:8000/api/addProducer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      dispatch(addProducer(formData));
+
+      setFormData({
+        name: "",
+        dob: "",
+        bio: "",
+        gender: "",
       });
-      const res = await data.json();
-      if (res.success === false) {
-      } else {
-        close();
-      }
     }
   };
   return (
     <div>
-      <Button onClick={open} value="Add Producer" variant="primary" />
-      <Modal opened={opened} onClose={close} withCloseButton={false}>
+      <Button
+        type="button"
+        onClick={open}
+        value="Add Producer"
+        variant="primary"
+      />
+      <Modal
+        opened={opened}
+        onClose={close}
+        withCloseButton={false}
+        overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+        classNames={{ body: classes.modal }}
+      >
         <form onSubmit={handleSubmit}>
           <Input
             onChange={handleChange}
             id="name"
             type="text"
             placeholder="name"
+            originalValue={formData.name}
           />
           {errors.name && <span className={classes.error}>{errors.name}</span>}
-          <Input
+          <TextArea
             onChange={handleChange}
             id="bio"
             type="text"
             placeholder="Bio"
+            originalValue={formData.bio}
           />
           {errors.bio && <span className={classes.error}>{errors.bio}</span>}
           <Input
@@ -68,6 +92,7 @@ function AddProducer() {
             id="dob"
             type="date"
             placeholder="date"
+            originalValue={formData.dob}
           />
           {errors.dob && <span className={classes.error}>{errors.dob}</span>}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -96,7 +121,11 @@ function AddProducer() {
           {errors.gender && (
             <span className={classes.error}>{errors.gender}</span>
           )}
-          <Button value="submit" variant="tertiary" />
+          <Button
+            disabled={status}
+            value={status ? <Loading /> : "submit"}
+            variant="tertiary"
+          />
         </form>
       </Modal>
     </div>

@@ -1,12 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-
-const URL = "http://localhost:8000/api/getactors";
+import { BASE_URL } from "../../config";
 
 export const fetchActors = createAsyncThunk("actor/fetchActors", async () => {
-  const data = await fetch(URL, {
+  const data = await fetch(`${BASE_URL}/getactors`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
+  });
+  const res = await data.json();
+  return res;
+});
+
+export const addActor = createAsyncThunk("actor/addActor", async (formData) => {
+  const data = await fetch(`${BASE_URL}/addactor`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
   });
   const res = await data.json();
   return res;
@@ -18,6 +29,7 @@ const actorSlice = createSlice({
     actors: [],
     status: false,
     error: null,
+    addedSuccessfully: false,
   },
   reducers: {
     editActor: (state, action) => {
@@ -40,11 +52,28 @@ const actorSlice = createSlice({
       (state.status = false), (state.actors = []);
       state.error = action.payload.message;
     });
+
+    builder
+      .addCase(addActor.pending, (state) => {
+        (state.status = true), (state.actors = [...state.actors]);
+        state.error = null;
+        state.addedSuccessfully = false;
+      })
+      .addCase(addActor.fulfilled, (state, action) => {
+        state.status = false;
+        state.actors = [...state.actors, action.payload];
+        state.addedSuccessfully = true;
+        state.error = null;
+      })
+      .addCase(addActor.rejected, (state, action) => {
+        state.status = false;
+        state.actors = [...state.actors];
+        state.error = action.payload.message;
+      });
   },
 });
 
 export const getActor = (state, id) => {
-  console.log(state.actor.actors);
   const actor = state.actor.actors.find((item) => item._id === id);
   return actor;
 };

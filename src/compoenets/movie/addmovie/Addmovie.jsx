@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { validMovie } from "../../../utils/validate/movie";
 import { FaHandPointUp } from "react-icons/fa";
 import TextArea from "../../ui/textArea/TextArea";
+import { BASE_URL } from "../../../config";
 
 function Addmovie() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -52,7 +53,7 @@ function Addmovie() {
     try {
       setLoading(true);
       const data = await fetch(
-        `http://localhost:8000/api/searchActor?name=${debouncedActor}`,
+        `${BASE_URL}/searchActor?name=${debouncedActor}`,
         {
           method: "GET",
           "Content-Type": "application/json",
@@ -61,7 +62,11 @@ function Addmovie() {
       const res = await data.json();
       if (res.success === false) {
       } else {
-        setActors(res);
+        res.map((item) => {
+          if (!selectedActorSet.has(item._id)) {
+            setActors((prev) => [...prev, item]);
+          }
+        });
       }
     } catch (error) {
       console.log(error);
@@ -82,7 +87,7 @@ function Addmovie() {
     try {
       setLoading(true);
       const data = await fetch(
-        `http://localhost:8000/api/searchProducer?name=${debounedProducer}`,
+        `${BASE_URL}/searchProducer?name=${debounedProducer}`,
         {
           method: "GET",
           "Content-Type": "application/json",
@@ -113,7 +118,7 @@ function Addmovie() {
       e.stopPropagation();
       if (validMovie(formData, setErrors)) {
         setBtnLoading(true);
-        const data = await fetch("http://localhost:8000/api/addmovies", {
+        const data = await fetch(`${BASE_URL}/addmovies`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -143,6 +148,7 @@ function Addmovie() {
     setSelectedActors((prev) => [...prev, actor]);
     setSelectedActorSet(selectedActorSet.add(actor._id));
     setFormData({ ...formData, actors: [...selectedActorSet] });
+    setActorQuery("");
   };
 
   const removeSelectedActor = (actor) => {
@@ -256,6 +262,7 @@ function Addmovie() {
             onChange={actorSearchHandler}
             placeholder="Actors"
             type="text"
+            originalValue={actorQuery}
           />
           {errors.actors && (
             <span className={classes.error}>

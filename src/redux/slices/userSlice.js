@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-
-const URL = "http://localhost:8000/api/signin";
+import { BASE_URL } from "../../config";
 
 export const signin = createAsyncThunk("user/signin", async (user) => {
-  const data = await fetch(URL, {
+  const data = await fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -34,7 +33,7 @@ const userSlice = createSlice({
       })
       .addCase(signin.rejected, (state, action) => {
         (state.status = false), (state.user = {});
-        state.error = action.payload;
+        state.error = action.payload.message;
       });
   },
 });

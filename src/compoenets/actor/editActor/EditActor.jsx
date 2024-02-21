@@ -8,6 +8,7 @@ import Button from "../../ui/button/Button";
 import { validateActor } from "../../../utils/validate/actor";
 import TextArea from "../../ui/textArea/TextArea";
 import Loading from "../../loading/Loading";
+import { BASE_URL } from "../../../config";
 
 function EditActor() {
   const { id } = useParams();
@@ -26,7 +27,7 @@ function EditActor() {
     try {
       if (validateActor(formData, setErrors)) {
         setLoading(true);
-        const data = await fetch(`http://localhost:8000/api/editactor/${id}`, {
+        const data = await fetch(`${BASE_URL}/editactor/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

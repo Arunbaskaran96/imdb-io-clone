@@ -3,12 +3,17 @@ import Button from "../../ui/button/Button";
 import classes from "./addactor.module.css";
 import { useDisclosure } from "@mantine/hooks";
 import Input from "../../ui/input/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { validateActor } from "../../../utils/validate/actor";
 import TextArea from "../../ui/textArea/TextArea";
+import { useDispatch } from "react-redux";
+import { actorSelector, addActor } from "../../../redux/slices/actorSlice";
+import Loading from "../../loading/Loading";
 
 function AddActor() {
   const [opened, { open, close }] = useDisclosure(false);
+  const dispatch = useDispatch();
+  const { status, addedSuccessfully } = actorSelector();
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
@@ -16,6 +21,12 @@ function AddActor() {
     gender: "",
     dob: "",
   });
+
+  useEffect(() => {
+    if (addedSuccessfully) {
+      close();
+    }
+  }, [addedSuccessfully]);
 
   const handleChange = (e) => {
     if (e.target.id === "male") {
@@ -26,22 +37,18 @@ function AddActor() {
       setFormData({ ...formData, [e.target.id]: e.target.value });
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (validateActor(formData, setErrors)) {
-      const data = await fetch("http://localhost:8000/api/addactor", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      dispatch(addActor(formData));
+      setFormData({
+        name: "",
+        bio: "",
+        gender: "",
+        dob: "",
       });
-      const res = await data.json();
-      if (res.success === false) {
-      } else {
-        close();
-      }
     }
   };
   return (
@@ -57,6 +64,7 @@ function AddActor() {
         onClose={close}
         withCloseButton={false}
         overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+        classNames={{ body: classes.modal }}
       >
         <form onSubmit={handleSubmit}>
           <Input
@@ -105,7 +113,11 @@ function AddActor() {
           {errors.gender && (
             <span className={classes.error}>{errors.gender}</span>
           )}
-          <Button value="Submit" variant="tertiary" />
+          <Button
+            disabled={status}
+            value={status ? <Loading /> : "Submit"}
+            variant="tertiary"
+          />
         </form>
       </Modal>
     </div>

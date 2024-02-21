@@ -8,6 +8,7 @@ import Button from "../../ui/button/Button";
 import TextArea from "../../ui/textArea/TextArea";
 import { validateActor } from "../../../utils/validate/actor";
 import Loading from "../../loading/Loading";
+import { BASE_URL } from "../../../config";
 
 function EditProducer() {
   const { id } = useParams();
@@ -27,16 +28,13 @@ function EditProducer() {
     try {
       if (validateActor(formData, setErrors)) {
         setLoading(true);
-        const data = await fetch(
-          `http://localhost:8000/api/editproducer/${id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-          }
-        );
+        const data = await fetch(`${BASE_URL}/editproducer/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
         const res = await data.json();
         if (res.success === false) {
         } else {

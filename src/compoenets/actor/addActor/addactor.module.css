@@ -12,3 +12,8 @@
 .error{
     color: red;
 }
+
+.modal{
+    background-color: var(--bg-color1);
+    color: var(--color1);
+}

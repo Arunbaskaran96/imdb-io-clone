@@ -1,2 +1,2 @@
 
-<img src="./public/loginpage.png" width="25" height="25"/>
+<img src="./public/loginpage.png" width="200" height="100"/>

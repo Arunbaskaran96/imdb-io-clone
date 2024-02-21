@@ -66,7 +66,7 @@ function EditMovie() {
     try {
       setLoading(true);
       const data = await fetch(
-        `${BASE_URL}searchProducer?name=${debouncedProducer}`,
+        `${BASE_URL}/searchProducer?name=${debouncedProducer}`,
         {
           method: "GET",
           headers: {
@@ -98,7 +98,7 @@ function EditMovie() {
     try {
       setLoading(true);
       const data = await fetch(
-        `${BASE_URL}searchActor?name=${debouncedActor}`,
+        `${BASE_URL}/searchActor?name=${debouncedActor}`,
         {
           method: "GET",
           "Content-Type": "application/json",
@@ -276,7 +276,11 @@ function EditMovie() {
                     <div>
                       no producers found
                       <div>
-                        <AddProducer />
+                        <AddProducer
+                          producerRef={producerRef}
+                          setSearchTerm={setProducerQuery}
+                          setFormData={setFormData}
+                        />
                       </div>
                     </div>
                   )}
@@ -336,7 +340,7 @@ function EditMovie() {
                     <div>
                       no actors found
                       <div>
-                        <AddActor />
+                        <AddActor setActorQuery={setActorQuery} />
                       </div>
                     </div>
                   )}

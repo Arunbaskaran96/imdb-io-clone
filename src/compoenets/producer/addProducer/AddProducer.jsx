@@ -14,7 +14,7 @@ import {
 import Loading from "../../loading/Loading";
 import TextArea from "../../ui/textArea/TextArea";
 
-function AddProducer() {
+function AddProducer({ producerRef, setSearchTerm }) {
   const [opened, { open, close }] = useDisclosure(false);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
@@ -37,6 +37,13 @@ function AddProducer() {
   };
   useEffect(() => {
     if (addProducerSuccessfully) {
+      if (producerRef) {
+        producerRef.current.value = "";
+        setSearchTerm("");
+      }
+      if (setFormData) {
+        setFormData({ ...formData, producer: "" });
+      }
       close();
     }
   }, [addProducerSuccessfully]);

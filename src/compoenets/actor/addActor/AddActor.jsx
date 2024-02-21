@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { actorSelector, addActor } from "../../../redux/slices/actorSlice";
 import Loading from "../../loading/Loading";
 
-function AddActor() {
+function AddActor({ setActorQuery }) {
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
   const { status, addedSuccessfully } = actorSelector();
@@ -24,6 +24,9 @@ function AddActor() {
 
   useEffect(() => {
     if (addedSuccessfully) {
+      if (setActorQuery) {
+        setActorQuery("");
+      }
       close();
     }
   }, [addedSuccessfully]);

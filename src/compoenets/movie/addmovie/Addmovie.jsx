@@ -237,7 +237,10 @@ function Addmovie() {
                 <div>
                   no producers found
                   <div>
-                    <AddProducer />
+                    <AddProducer
+                      producerRef={producerRef}
+                      setSearchTerm={setSearchTerm}
+                    />
                   </div>
                 </div>
               )}
@@ -295,7 +298,7 @@ function Addmovie() {
                 <div>
                   no actors found
                   <div>
-                    <AddActor />
+                    <AddActor setActorQuery={setActorQuery} />
                   </div>
                 </div>
               )}

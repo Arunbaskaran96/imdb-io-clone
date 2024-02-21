@@ -118,7 +118,7 @@ function Addmovie() {
       e.stopPropagation();
       if (validMovie(formData, setErrors)) {
         setBtnLoading(true);
-        const data = await fetch(`${BASE_URL}/addmovies`, {
+        const data = await fetch(`${BASE_URL}/addmovie`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

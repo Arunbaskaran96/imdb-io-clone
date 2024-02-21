@@ -20,5 +20,5 @@ or else
 Here you can see three button.
 
 1.Actors - you can view all the actors.<br/>
-2.Movies - you can view all the movies.
-2.Producers - you can view all the Producers.
+2.Movies - you can view all the movies.<br/>
+2.Producers - you can view all the Producers.<br/>

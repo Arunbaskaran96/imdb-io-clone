@@ -33,3 +33,9 @@ If the producer is not available in DB,you can add a new producer.<br/>
 
 <img src="./public/addactor.png"  width="500" height="300"/>
 :star: If the actor is not available in DB,you can add a new actor.<br/>
+
+<img src-"./public/topbar.png" width="500" height="300"/>
+:star:This is the topbar of this web application<br/>
+You can see two buttons on the right side<br/>
+1.To toggle the  theme (Dark theme- Light theme)
+2.Logout Button

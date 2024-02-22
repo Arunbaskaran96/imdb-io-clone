@@ -5,13 +5,10 @@
 
 Here you can see three buttons.
 
-1.signin - to login to the web app.
-
-2.create new account- if you want to create a new account.click here this will route to register page.
-
-or else
-
-3.generate credential - this button is created for testing purpose.if you click this button this will autofill the login information.
+1.signin - to login to the web app.<br/>
+2.create new account- if you want to create a new account.click here this will route to register page.<br/>
+or else<br/>
+3.generate credential - this button is created for testing purpose.if you click this button this will autofill the login information.<br/>
 
 <img src="./public/homepage.png" width="500" height="300"/>.
 
